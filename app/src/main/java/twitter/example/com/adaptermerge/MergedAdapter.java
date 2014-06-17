@@ -47,7 +47,12 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
         @Override
         protected void publishResults(final CharSequence constraint, final FilterResults results) {
             for (T adapter : mAdapters) {
-                adapter.getFilter().filter(constraint);
+                // Strip the first symbol.
+                if (constraint != null && constraint.length() >= 2) {
+                    adapter.getFilter().filter(constraint.subSequence(1, constraint.length() - 1));
+                } else {
+                    adapter.getFilter().filter(null);
+                }
             }
         }
     }
