@@ -19,7 +19,6 @@
 package twitter.example.com.adaptermerge;
 
 import android.database.DataSetObserver;
-import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -54,12 +53,12 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
     }
 
     public static class LocalAdapterPosition<T extends BaseAdapter & Filterable> {
-        public final T mAdapter;
-        public final int mLocalPosition;
+        public final T adapter;
+        public final int localPosition;
 
         public LocalAdapterPosition(T adapter, int offset) {
-            mAdapter = adapter;
-            mLocalPosition = offset;
+            this.adapter = adapter;
+            localPosition = offset;
         }
     }
 
@@ -141,7 +140,7 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
         if (result == null) {
             return null;
         }
-        return result.mAdapter.getItem(result.mLocalPosition);
+        return result.adapter.getItem(result.localPosition);
     }
 
     @Override
@@ -163,12 +162,12 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
         LocalAdapterPosition<T> result = getAdapterOffsetForItem(position);
         int otherViewTypeCount = 0;
         for (T adapter : mAdapters) {
-            if (adapter == result.mAdapter) {
+            if (adapter == result.adapter) {
                 break;
             }
             otherViewTypeCount += adapter.getViewTypeCount();
         }
-        int type = result.mAdapter.getItemViewType(result.mLocalPosition);
+        int type = result.adapter.getItemViewType(result.localPosition);
         // Headers (negative types) are in a separate global namespace and their values should not
         // be affected by preceding adapter view types.
         if (type >= 0) {
@@ -180,13 +179,13 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LocalAdapterPosition<T> result = getAdapterOffsetForItem(position);
-        return result.mAdapter.getView(result.mLocalPosition, convertView, parent);
+        return result.adapter.getView(result.localPosition, convertView, parent);
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         LocalAdapterPosition<T> result = getAdapterOffsetForItem(position);
-        return result.mAdapter.getDropDownView(result.mLocalPosition, convertView, parent);
+        return result.adapter.getDropDownView(result.localPosition, convertView, parent);
     }
 
     @Override
@@ -201,7 +200,7 @@ public class MergedAdapter<T extends BaseAdapter & Filterable> extends BaseAdapt
     @Override
     public boolean isEnabled(int position) {
         LocalAdapterPosition<T> result = getAdapterOffsetForItem(position);
-        return result.mAdapter.isEnabled(result.mLocalPosition);
+        return result.adapter.isEnabled(result.localPosition);
     }
 
 }
