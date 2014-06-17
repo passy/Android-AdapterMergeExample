@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,13 +36,19 @@ public class MainFragment extends Fragment {
             Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, rootView);
-        setupViews();
+
+        setupAutocomplete();
         return rootView;
     }
 
-    private void setupViews() {
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(
+    private void setupAutocomplete() {
+        final ArrayAdapter<String> hashtagAdapter = new ArrayAdapter<>(
                 getActivity(), android.R.layout.simple_dropdown_item_1line, HASHTAGS);
-        mEditText.setAdapter(adapter);
+        final ArrayAdapter<String> featuredAdapter = new ArrayAdapter<>(
+                getActivity(), R.layout.featured_dropdown_item_1line, FEATURED_HASHTAGS);
+        final ArrayAdapter<String> usersAdapter = new ArrayAdapter<>(
+                getActivity(), android.R.layout.simple_dropdown_item_1line, USERS);
+
+        mEditText.setAdapter(hashtagAdapter);
     }
 }
